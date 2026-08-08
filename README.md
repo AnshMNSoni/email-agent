@@ -40,7 +40,7 @@ flowchart TD
 
     subgraph StateMachine ["LangGraph State Machine"]
         B --> C["classify_intent\n(Ollama LLM)"]
-        C --> D{"🔀 Router"}
+        C --> D{"Router"}
         
         D -->|"pending_send active"| H["handle_send"]
         D -->|"pending_delete active"| I["handle_delete"]
