@@ -142,7 +142,7 @@ Here are a few things you can type in the interactive prompt:
 - "Summarize those emails."
 - "Mark the first email as read and archive it."
 - "Download the attachment from email 2."
-- "Send an email to john@example.com about the meeting tomorrow and attach C:\path\to\report.pdf"
+- "Send an email to ansh@example.com about the meeting tomorrow and attach C:\path\to\report.pdf"
 - "Delete the 3rd email."
 
 Type `exit` or `quit` to leave the agent.
