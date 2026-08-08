@@ -30,6 +30,56 @@ This agent runs directly from your terminal and allows you to manage your Gmail 
 
 ---
 
+## Workflow Diagram
+
+```mermaid
+flowchart TD
+    subgraph UserInterface ["User Interaction"]
+        A["User Prompt"] --> B["CLI Interface (Typer + Rich)"]
+    end
+
+    subgraph StateMachine ["LangGraph State Machine"]
+        B --> C["classify_intent\n(Ollama LLM)"]
+        C --> D{"🔀 Router"}
+        
+        D -->|"pending_send active"| H["handle_send"]
+        D -->|"pending_delete active"| I["handle_delete"]
+        
+        D -->|"list_search"| E["handle_list_search"]
+        D -->|"read"| F["handle_read"]
+        D -->|"summarize"| G["handle_summarize"]
+        D -->|"send"| H
+        D -->|"delete"| I
+        D -->|"label"| J["handle_label"]
+        D -->|"converse"| K["handle_converse"]
+    end
+
+    subgraph Integrations ["Services & Tools"]
+        E <-->|"Search Query (LLM) & Fetch"| L[("Gmail API")]
+        F <-->|"Get Email Body"| L
+        F -->|"Download Attachments"| M[("./downloads")]
+        G <-->|"Fetch Email & Attachment Text"| L
+        G <-->|"Generate Summary"| N[("Ollama LLM\nqwen2.5-coder:3b")]
+        H <-->|"Extract Fields (LLM) & Dispatch"| L
+        H <-->|"Field Extraction"| N
+        I <-->|"Build Query (LLM) & Move to Trash"| L
+        I <-->|"Build Query"| N
+        J <-->|"Modify Labels"| L
+        K <-->|"Conversational Response"| N
+    end
+
+    E --> O["Rich Terminal Output"]
+    F --> O
+    G --> O
+    H --> O
+    I --> O
+    J --> O
+    K --> O
+    O --> A
+```
+
+---
+
 ## Setup & Installation
 
 ### 1. Prerequisites
